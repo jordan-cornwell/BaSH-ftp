@@ -18,8 +18,8 @@ do
 done
 
 #credentials for the ftp server
-USER='bvftp'
-PASSWD='randompasswordsarehardtotype'
+USER='XXX'
+PASSWD='XXX'
 
 #repeat process for downloading more than one picture without needing to run the script multiple times
 echo 'do you need to download another picutre?(y/n)'
