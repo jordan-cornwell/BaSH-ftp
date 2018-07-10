@@ -7,13 +7,18 @@ read HOST
 echo 'do you need to take down any picutres?(y/n)'
 read ANS
 
-#taking down any of the old/dated displayes defined by the user
+#taking down any of the old/dated displayes defined by the user by removing them from the directory the pi pulls them from. 
+#NOTE: the script is not very smart, and only reads the character 'y', any other input will cause it to exit the loop. 
 while [ $ANS == 'y' ]
-do 
+do
+	#the purpose of the below ls command is to show what pictures are currently in the directory. in order to delete a picture 
+	#you have to type its name and extension exactly as it is written in the output from the command
+	ls /usr/lib/rs/imgs/
 	echo 'what is the name of the picture that you want to take down?'
 	read OLDPIC
 	sudo rm /usr/lib/rs/imgs/$OLDPIC
 	echo 'do you need to take down another picture?(y/n)'
+	#NOTE: the script is not very smart, and only reads the character 'y', any other input will cause it to exit the loop. 
 	read ANS
 done
 
@@ -24,23 +29,28 @@ PASSWD='XXX'
 #repeat process for downloading more than one picture without needing to run the script multiple times
 echo 'do you need to download another picutre?(y/n)'
 read ANS2
+#NOTE: the script is not very smart, and only reads the character 'y', any other input will cause it to exit the loop. 
 while [ $ANS2 == 'y' ]
-do 
+do
+	#the purpose of the bellow ftp connection command is to ls its contents
+	lftp -u $USER,$PASSWD $HOST << EOT
+	set ssl:verify-certificate no #need to fix this
+	ls
+	bye
+EOT
+	#to download a file you have to type its name and extension exactly as it is written in the output of the above ls command
 	echo 'what is the name of the picure that you want to download?'
 	read PICTUREREPEAT
 	lftp -u $USER,$PASSWD $HOST << EOT
-	set ssl:verify-certificate no
+	set ssl:verify-certificate no #need to fix this
 	get $PICTUREREPEAT
 	bye
 EOT
 	sudo mv $PICTUREREPEAT /usr/lib/rs/imgs
 	echo 'do you need to download another picutre?(y/n)'
+	#NOTE: the script is not very smart, and only reads the character 'y', any other input will cause it to exit the loop. 
 	read ANS2
 done
 
+#confirming that the script is done running. 
 echo 'all done.'
-
-#I have done some research into a few different ways that we can make this a little more secure.
-#we can try and have the password stored in a different file
-#we can try and make the script executable from a different user but not readable. 
-#we can have the person using the script enter in the credentials as the script is ran
