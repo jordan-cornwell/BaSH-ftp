@@ -1,8 +1,6 @@
 #!bin/bash
 
-#defining variables to be used in later commands, adds more autonomy
-echo 'what is the ip of the server?'
-read HOST
+#defining a variables to be used in later commands, adds more autonomy
 
 echo 'do you need to take down any picutres?(y/n)'
 read ANS
@@ -25,6 +23,8 @@ done
 #credentials for the ftp server
 USER='XXX'
 PASSWD='XXX'
+#no longer need to ask the user for host information as the server has an elastic ip
+HOST='XXX.XXX.XXX.XXX'
 
 #repeat process for downloading more than one picture without needing to run the script multiple times
 echo 'do you need to download another picutre?(y/n)'
